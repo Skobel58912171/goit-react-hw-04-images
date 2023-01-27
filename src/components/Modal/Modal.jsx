@@ -2,25 +2,23 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { Backdrop, ModalContainer, ImgLarge } from './Modal.styled';
 
-export const Modal = ({ largeUrl, tags, onClose }) => {
+export const Modal = ({ largeUrl, onClose }) => {
   useEffect(() => {
+    const onCloseByEsc = evt => {
+      if (evt.code === 'Escape') {
+        onClose();
+      }
+    };
     window.addEventListener('keydown', onCloseByEsc);
-  });
-
-  useEffect(() => {
-    window.removeEventListener('keydown', onCloseByEsc);
-  });
-
-  const onCloseByEsc = evt => {
-    if (evt.code === 'Escape') {
-      onClose();
-    }
-  };
+    return () => {
+      window.removeEventListener('keydown', onCloseByEsc);
+    };
+  }, [onClose]);
 
   return (
     <Backdrop onClick={onClose}>
       <ModalContainer>
-        <ImgLarge src={largeUrl} alt={tags} />
+        <ImgLarge src={largeUrl} />
       </ModalContainer>
     </Backdrop>
   );
@@ -28,6 +26,6 @@ export const Modal = ({ largeUrl, tags, onClose }) => {
 
 Modal.propTypes = {
   largeUrl: PropTypes.string.isRequired,
-  tags: PropTypes.string.isRequired,
+
   onClose: PropTypes.func.isRequired,
 };

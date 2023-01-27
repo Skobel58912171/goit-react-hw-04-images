@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Header, Form, Field, Btn } from './Searchbar.styled';
 
-export const Searchbar = onSubmit => {
+export const Searchbar = ({ onSubmit }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleChange = e => {

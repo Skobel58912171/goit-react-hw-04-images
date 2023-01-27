@@ -15,19 +15,25 @@ export const App = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchImagesWithQuery({ searchQuery: searchQuery, page })
-      .then(resp => {
-        setImages(prevImages => [...prevImages, ...resp.hits]);
-
-        setTotalImages(resp.totalHits);
-      })
-      .finally(() => {
+    async function fetchImages() {
+      if (searchQuery === '') {
+        return;
+      }
+      try {
+        const data = await fetchImagesWithQuery(searchQuery, page);
+        // console.log(data);
+        setImages(prevImages => [...prevImages, ...data.hits]);
+        setTotalImages(data.totalHits);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    }
+
+    fetchImages();
   }, [page, searchQuery]);
 
   const handleSearch = searchQuery => {
+    setIsLoading(true);
     setSearchQuery(searchQuery);
     setPage(1);
     setImages([]);

@@ -10,7 +10,7 @@ export const ImageGalleryItem = ({ image }) => {
   return (
     <>
       <ItemGallery onClick={() => setIsModalOpen(true)}>
-        <Image src={image.webformatURL} alt={image.tags} />
+        <Image src={image.webformatURL} />
       </ItemGallery>
       {isModalOpen && (
         <Modal
