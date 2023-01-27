@@ -1,37 +1,33 @@
 import PropTypes from 'prop-types';
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { Backdrop, ModalContainer, ImgLarge } from './Modal.styled';
-export class Modal extends Component {
-  static propTypes = {
-    onClose: PropTypes.func.isRequired,
-  };
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.onCloseByEsc);
-  }
+export const Modal = ({ largeUrl, tags, onClose }) => {
+  useEffect(() => {
+    window.addEventListener('keydown', onCloseByEsc);
+  });
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onCloseByEsc);
-  }
-  onCloseByEsc = evt => {
+  useEffect(() => {
+    window.removeEventListener('keydown', onCloseByEsc);
+  });
+
+  const onCloseByEsc = evt => {
     if (evt.code === 'Escape') {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  render() {
-    const { largeUrl, tags, onClose } = this.props;
-    return (
-      <Backdrop onClick={onClose}>
-        <ModalContainer>
-          <ImgLarge src={largeUrl} alt={tags} />
-        </ModalContainer>
-      </Backdrop>
-    );
-  }
-}
+  return (
+    <Backdrop onClick={onClose}>
+      <ModalContainer>
+        <ImgLarge src={largeUrl} alt={tags} />
+      </ModalContainer>
+    </Backdrop>
+  );
+};
 
-// Modal.propTypes = {
-//   largeUrl: PropTypes.string,
-//   tags: PropTypes.string,
-// };
+Modal.propTypes = {
+  largeUrl: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
